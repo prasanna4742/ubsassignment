@@ -1,45 +1,47 @@
 package hackerrank;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class FurnitureOrder implements FurnitureOrderInterface {
-    /**
-     * TODO: Create a map of Furniture items to order quantities
-     */
+
+    Map<Furniture, Integer> furnitureItemToOrderMap;
 
     /**
      * Initialize a new mapping of Furniture types to order quantities.
      */
     FurnitureOrder() {
-        // TODO: Complete the constructor
+        furnitureItemToOrderMap = new HashMap<Furniture, Integer>();
     }
 
     public void addToOrder(final Furniture type, final int furnitureCount) {
-        // TODO: Complete the method
+
+        furnitureItemToOrderMap.put(type, furnitureItemToOrderMap.getOrDefault(type, 0)+furnitureCount);
     }
 
     public HashMap<Furniture, Integer> getOrderedFurniture() {
-        // TODO: Complete the method
-        return null;
+        //Ideally we should return interface Map and not the implementation like HashMap, but since this is given as a problem statement
+        //not changing the method signature.
+        return (HashMap<Furniture, Integer>)furnitureItemToOrderMap;
     }
 
     public float getTotalOrderCost() {
-        // TODO: Complete the method
-        return -1.0f;
+        
+        return (float) furnitureItemToOrderMap.entrySet()
+            .stream().mapToDouble(x -> (x.getKey().cost()*x.getValue()))
+            .sum();
+
     }
 
-    public int getTypeCount(Furniture type) {
-        // TODO: Complete the method
-        return -1;
+    public int getTypeCount(Furniture type) {                
+        return furnitureItemToOrderMap.getOrDefault(type,0);
     }
 
     public float getTypeCost(Furniture type) {
-        // TODO: Complete the method
-        return -1.0f;
+        return (float)(furnitureItemToOrderMap.getOrDefault(type, 0)*type.cost());   
     }
 
     public int getTotalOrderQuantity() {
-        // TODO: Complete the method
-        return -1;
+        return furnitureItemToOrderMap.values().stream().mapToInt(Integer::intValue).sum();
     }
 }
